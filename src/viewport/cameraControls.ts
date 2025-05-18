@@ -1,11 +1,14 @@
 import * as THREE from "three"
+import { PI } from "three/tsl";
 
 
 
 export class OrbitController {
     camera: THREE.PerspectiveCamera;
     focalPoint: THREE.Vector3;
+    //also mesured in radians
     maxPhiAngle: number;
+    minPhiAngle: number;
     //angles are measured in radians
     rho: number;
     theta: number = 0;
@@ -18,6 +21,7 @@ export class OrbitController {
         this.rho = radius;
         this.focalPoint = focalPoint;
         this.maxPhiAngle = maxPhiAngle;
+        this.minPhiAngle = Math.PI - maxPhiAngle;
 
         //calculates the theta and phi based on current camera position;
         const { x, y, z} = camera.position;
@@ -30,7 +34,9 @@ export class OrbitController {
 
     beginListening() {
         console.log("here");
-        document.addEventListener("mousemove", this.updateInternal.bind(this))
+
+        //TODO: change the 
+        document.addEventListener("mousemove", this.updateInternal.bind(this));
     }
 
     //deltaTheta is tied to 
@@ -43,12 +49,17 @@ export class OrbitController {
                 this.deltaPhi += mouse.movementY / 200;
             }   
         }
-
-        console.log(this.deltaTheta);
     } 
 
     update() {
-        this.phi += this.deltaPhi;
+        this.phi -= this.deltaPhi;
+
+        if (this.phi <= this.maxPhiAngle) {
+            this.phi = this.maxPhiAngle;
+        } else if (this.phi >= this.minPhiAngle) {
+            this.phi = this.minPhiAngle;
+        }
+
         this.theta += this.deltaTheta;
         const x = this.rho * Math.sin(this.phi) * Math.cos(this.theta);
         const z = this.rho * Math.sin(this.phi) * Math.sin(this.theta);
