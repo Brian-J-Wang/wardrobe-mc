@@ -25,26 +25,6 @@ gltfLoader.load("src/assets/model.gltf",
         console.log(error);
     }
 )
-// objLoader.load("src/assets/model.obj", 
-//     (obj) => {
-//         const texture = textureLoader.load("src/assets/steve.png");
-//         const material = new THREE.MeshBasicMaterial({
-//             map: texture
-//         })
-
-//         obj.traverse((child) => {
-//             if (child instanceof THREE.Mesh) {
-//                 child.material = material;
-//             }
-//         })
-
-//         obj.updateMatrixWorld();
-//         scene.add( obj );
-//     },
-//     // called when loading is in progress
-    
-// )
-
 
 const light = new THREE.AmbientLight(0x404040, 50);
 scene.add(light);
